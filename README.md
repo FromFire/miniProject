@@ -7,14 +7,14 @@
 
 Part abc:
   
-- riino
+- riino(Shih-Chi Chang)
 
-- PXNPXN
+- PXNPXN(Xiao-Nan Peng)
 
-- blessiy
+- blessiy(Jian Li)
 
-bd: 
+Part bd: 
 
-- FromFire 
+- FromFire(Jing-Wen Cheng)
 
-- Moshu
+- Moshu(Shu Mo)
