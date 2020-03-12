@@ -3,6 +3,18 @@
 
 
 
-init
-abc:  riino, PXNPXN,blessiy
-bd: FromFire Moshu
+## Team member
+
+Part abc:
+  
+- riino
+
+- PXNPXN
+
+- blessiy
+
+bd: 
+
+- FromFire 
+
+- Moshu
