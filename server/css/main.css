@@ -1,0 +1,142 @@
+.menu {
+    float: left;
+    width: 100px;
+    height: 200px;
+    margin-top: 200px;
+    margin-left: 100px;
+    /*background-color: #45B7FF;*/
+    text-align: center;
+    border: 1px solid #45B7FF;
+  }
+  .menu .menu_bar {
+    background-color: #45B7FF;
+    font-size: larger;
+    color: white;
+    height: 30px;
+    line-height: 30px;
+  }
+  .menu table {
+    margin-top: 10px;
+    margin-left: 30px;
+    text-align: center;
+  }
+  .menu table td {
+    height: 30px;
+    line-height: 30px;
+  }
+  .menu table td a{
+    text-decoration: none;
+    color: black;
+  }
+  .menu table td a:hover{
+    background-color: #CCCCCC;
+    color: white;
+  }
+
+
+  .container {
+    float: left;
+    width: 900px;
+  }
+
+  .head {
+    text-align: center;
+  }
+  .head button {
+    background-color: #45B7FF;
+    border-radius: 5px;
+    width: 100px;
+    height: 25px;
+    border-color: #45B7FF;
+    color: white;
+    margin-left: 100px;
+  }
+  .head div {
+    font-size: smaller;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    color: #CCCCCC;
+  }
+  .head input[type=text] {
+    width: 169px;
+    height: 21px;
+    background-color: white;
+  }
+  .head select {
+    width: 173px;
+    height: 25px;
+  }
+  .head ul li {
+    margin:5px 0px;
+  }
+  #content {
+
+    width: 900px;
+    text-align: left;
+  }
+  ul {
+    list-style: none;
+  }
+  #content div {
+    margin: 10px 5%;
+    width: 90%;
+    border: 1px solid #CCCCCC;
+    padding: 5px 0px;
+  }
+  #content input[type=text] {
+    width: 700px;
+    border: none;
+    height: 30px;
+    padding-left: 5px;
+  }
+  #content ul {
+    margin-top: 10px;
+    margin-left: 50px;
+  }
+
+  #content ul li input[type=text] {
+    width: 400px;
+  }
+
+  #content ul li {
+    margin-bottom: 5px;
+  }
+  #content div textarea {
+    width: 700px;
+    height: 50px;
+    border: none;
+    margin-left: 5px;
+  }
+  #content label {
+    height: 20px;
+    line-height: 20px;
+    display: inline-block;
+  }
+  .close {
+    width: 30px !important;
+    display: none;
+    position: absolute;   
+  }
+   .add {
+    width: 30px !important;
+    display: none;
+    position: absolute;
+  }
+  .delete {
+    width: 30px !important;
+    display: none;
+    position: absolute;     
+  }
+  .addMulti{
+    width: 30px !important;
+    display: none;
+    position: absolute;
+  }
+  .deleteMulti{
+    width: 30px !important;
+    display: none;
+    position: absolute; 
+  }
+  .qrcode{
+    display: none;
+  }
