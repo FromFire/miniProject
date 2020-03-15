@@ -4,8 +4,8 @@
     <title></title>
     <meta charset="utf-8">
     <script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
-    <script type="text/javascript" src="//static.runoob.com/assets/qrcode/qrcode.min.js"></script>
-
+<!--    <script type="text/javascript" src="//static.runoob.com/assets/qrcode/qrcode.min.js"></script>-->
+    <script type="text/javascript" src="css/jquery.qrcode.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <!--
     <script type="text/javascript" src="js/main.js"></script>
@@ -14,58 +14,58 @@
 
 </head>
 <body>
-    <div class="main">
-        <div class="menu">
-            <div class="menu_bar">Qustion Type</div>
-            <div>
-                <table>
-                    <!--
-                    <tr><td><a href="javascript:;" id="label">段落</a></td></tr>
-                    -->
-                    <tr><td><a href="javascript:;" id="radio2">Single(2)</a></td></tr>
-                    <tr><td><a href="javascript:;" id="radio3">Multi(3)</a></td></tr>
-                    <tr><td><a href="javascript:;" id="text">Text</a></td></tr>
-                </table>
-            </div>      
+<div class="main">
+    <div class="menu">
+        <div class="menu_bar">Qustion Type</div>
+        <div>
+            <table>
+                <!--
+                <tr><td><a href="javascript:;" id="label">段落</a></td></tr>
+                -->
+                <tr><td><a href="javascript:;" id="radio2">Single(2)</a></td></tr>
+                <tr><td><a href="javascript:;" id="radio3">Multi(3)</a></td></tr>
+                <tr><td><a href="javascript:;" id="text">Text</a></td></tr>
+            </table>
         </div>
-        <div class="container">
-            <div class="head"> 
-                <ul>
-                    <li>
-                        Questionire Name：
-                        <input type="text" id="questionnaireName">
-                    </li>
-                    <li>
-                        <button id="btnSubmit">Submit</button>
-                    </li>
-                </ul>           
-                <div>Please click the submit button after creating your questionire</div>
-                <div id="qrcode" style="width:100px; height:100px; margin-top:15px;"></div>
-            </div>
-
-            <div id="content">
-
-            </div>          
-        </div>      
     </div>
-    
+    <div class="container">
+        <div class="head">
+            <ul>
+                <li>
+                    Questionire Name：
+                    <input type="text" id="questionnaireName">
+                </li>
+                <li>
+                    <button id="btnSubmit">Submit</button>
+                </li>
+            </ul>
+            <div>Please click the submit button after creating your questionire</div>
+            <div id="qrcode" style="width:100px; height:100px; margin-top:15px;margin-left: 45px"></div>
+        </div>
+
+        <div id="content">
+
+        </div>
+    </div>
+</div>
+
 
 </body>
 </html>
 <script type="text/javascript">
-//JQuery is asked.
+    //JQuery is asked.
     count = 0 ;
 
-//add quesion
+    //add quesion
     function formRadio2() {
-        count++;        
+        count++;
         var radio  =    "<div id='Q" + count+"' name='Q" + count+"' type='radio' number='"+count+"'><label>" + "Q" + count+":</label>&nbsp;&nbsp;<input type='text' class='title' value='Please fill description for singel'/>"+"<ul class='answer'><li><input type='radio'><input type='text' value='Option1'></li><li><input type='radio'><input type='text' value='Option2'> </li></ul><button class='close'>x</button><button class='add'>+</button><button class='delete'>-</button></div>";
         return radio;
-    }   
+    }
 
     //abandoned.
     function formRadio3() {
-        count++;        
+        count++;
         var radio  =    "<div id='Q" + count+"' name='Q" + count+"' type='radio' number='"+count+"'><label>" + "Q" + count+":</label>&nbsp;&nbsp;<input type='text' class='title' value='Please fill description for singel'/>"+"<ul class='answer'><li><input type='radio'><input type='text' value='Option1'></li><li><input type='radio'><input type='text' value='Option2'></li><li><input type='radio'><input type='text' value='Option3'></li></ul><button class='close'>x</button></div>";
         return radio;
     }
@@ -78,8 +78,8 @@
 
     function formText() {
         count++;
-        var text = "<div id='Q" + count+"' name='Q" + count+"' type='text' number='"+count+"'><label>" + "Q" + count+":</label>&nbsp;&nbsp;<input type='text' class='title' value='Please fill description for text'/><ul><li><input type='text'></li></ul><button class='close'>x</button></div>";     
-        return text;        
+        var text = "<div id='Q" + count+"' name='Q" + count+"' type='text' number='"+count+"'><label>" + "Q" + count+":</label>&nbsp;&nbsp;<input type='text' class='title' value='Please fill description for text'/><ul><li><input type='text'></li></ul><button class='close'>x</button></div>";
+        return text;
     }
     //abandoned
     function formLabel() {
@@ -87,8 +87,8 @@
         return label;
     }
     $(".menu").on("click","a",function(){
-         var id = $(this).attr("id");
-         switch(id) {
+        var id = $(this).attr("id");
+        switch(id) {
             case "radio2" :
                 var content = formRadio2();
                 $("#content").append(content);
@@ -97,138 +97,204 @@
                 //var content = formRadio3();
                 var content = formCheck();
                 $("#content").append(content);
-                break;              
+                break;
             case "text" :
                 var content = formText();
                 $("#content").append(content);
-                break;  
+                break;
             case "label" :
                 var content = formLabel();
                 $("#content").append(content);
-                break;              
-         }      
+                break;
+        }
     });
-      
+
     $("#btnSubmit").on("click", function(){
-       
+
         var counter=0
         var content = [];
         var count = 0;
-        $("#content").find("div[type]").each(function(){
-            var type = $(this).attr("type");
-            //collcet quesion options
-            if (type == "label") {
-                var tempdata = {};
-                tempdata['type']    =   type;
-                tempdata['question']   =   $(this).find("textarea").val();        
-                content[count++]    =   tempdata;
-                counter++;
-            } else if (type == "radio") {
-                var tempdata = {};
-                tempdata['type']    =   "single";
-                tempdata['question']   =   $(this).find("input.title").val();             
-                var tempCount   =   1;
-                var tempRadio   =   {};
-                $(this).find(".answer input[type=text]").each(function(){
-                    tempRadio[tempCount++]  =   $(this).val();
-                });
-                tempdata['options']  =   tempRadio;
+        $("#qrcode").empty();
+        if( $("#questionnaireName").val()==""){
+            alert("请先输入问卷的标题!");
+            return;
+        }else{
+            if(confirm("您确定要保存当前问卷吗？")==true){
+                $("#content").find("div[type]").each(function(){
+                    var type = $(this).attr("type");
+                    //collcet quesion options
+                    if (type == "label") {
+                        var tempdata = {};
+                        tempdata['type']    =   type;
+                        tempdata['question']   =   $(this).find("textarea").val();
+                        content[count++]    =   tempdata;
+                        counter++;
+                    } else if (type == "radio") {
+                        var tempdata = {};
+                        tempdata['type']    =   "single";
+                        tempdata['question']   =   $(this).find("input.title").val();
+                        var tempCount   =   1;
+                        var tempRadio   =   {};
+                        $(this).find(".answer input[type=text]").each(function(){
+                            tempRadio[tempCount++]  =   $(this).val();
+                        });
+                        tempdata['options']  =   tempRadio;
 
-                content[count++]    =   tempdata;
-                counter++;
+                        content[count++]    =   tempdata;
+                        counter++;
 
-            } else if (type == "text") {
-                var tempdata = {};
-                tempdata['type']    =   type;
-                tempdata['question']   =   $(this).find("input.title").val();         
-                content[count++]    =   tempdata;
-                counter++;
-            } else if (type == "checkbox"){
-                var tempdata = {};
-                tempdata['type']    =   "multi";
-                tempdata['question']   =   $(this).find("input.title").val();             
-                var tempCount   =   1;
-                var tempRadio   =   {};
-                $(this).find(".answer input[type=text]").each(function(){
-                    tempRadio[tempCount++]  =   $(this).val();
+                    } else if (type == "text") {
+                        var tempdata = {};
+                        tempdata['type']    =   type;
+                        tempdata['question']   =   $(this).find("input.title").val();
+                        content[count++]    =   tempdata;
+                        counter++;
+                    } else if (type == "checkbox"){
+                        var tempdata = {};
+                        tempdata['type']    =   "multi";
+                        tempdata['question']   =   $(this).find("input.title").val();
+                        var tempCount   =   1;
+                        var tempRadio   =   {};
+                        $(this).find(".answer input[type=text]").each(function(){
+                            tempRadio[tempCount++]  =   $(this).val();
+                        });
+                        tempdata['options']  =   tempRadio;
+                        content[count++]    =   tempdata;
+                        counter++;
+                    }
+
                 });
-                tempdata['options']  =   tempRadio;
-                content[count++]    =   tempdata;
-                counter++;
+                //package json
+                function GetXmlHttpObject() {
+                    var xmlHttp=null;
+                    try
+                    {
+                        // Firefox, Opera 8.0+, Safari
+                        xmlHttp=new XMLHttpRequest();
+                    }
+                    catch (e)
+                    {
+                        // Internet Explorer
+                        try
+                        {
+                            xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+                        }
+                        catch (e)
+                        {
+                            xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+                        }
+                    }
+                    return xmlHttp;
+                }
+
+                var survey = {};
+                var timestamp=Number(new Date());
+                var name    =   $("#questionnaireName").val();
+                survey["len"]  =  counter;
+                survey["id"]   =  timestamp;
+                survey["name"] = name;
+                survey["questions"] = content;
+                var json = {};
+                json["survey"]  =  survey;
+
+                var jsonString = JSON.stringify(json);
+                //console.log(template);
+                console.log(timestamp);
+                console.log(jsonString);
+                //console.log(name);
+                //
+                //     $("#qrcode").html("正在提交数据，请勿关闭当前窗口...");
+                //     $.ajax({
+                //         type: "POST",
+                //         url: "../qrcode.php",
+                //         contentType: "application/json; charset=utf-8",
+                //         data: jsonString,
+                //     dataType: "json",
+                //         success: function (message) {
+                //             alert("请求已提交！我们会尽快与您取得联系");
+                //     },
+                //     error: function (message) {
+                //         $("#qrcode").html("提交数据失败！");
+                //     }
+                // });
+
+
+                var xhr=GetXmlHttpObject();
+                xhr.open("POST","./qrcode.php");
+                xhr.setRequestHeader('Content-Type',' application/x-www-form-urlencoded');
+                // 设置数据
+                xhr.send("data="+jsonString);
+
+                // 监听服务器响应
+                xhr.onreadystatechange = function(){
+                    if (xhr.readyState==4 && xhr.status==200){
+                        $("#qrcode").qrcode({
+                            width:100,
+                            render:"canvas",
+                            height:100,
+                            text:"https://xiaonan.ngrok2.xiaomiqiu.cn/server/jsondata/"+ timestamp+".json"
+                        });
+                    }
+                }
+            }else{
+                return;
             }
-
-        });
-        //package json
-        var survey = {};
-        var timestamp=Number(new Date());
-        var name    =   $("#questionnaireName").val();
-        survey["len"]  =  counter;
-        survey["id"]   =  timestamp;
-        survey["name"] = name;
-        survey["questions"] = content;
-        var json = {};
-        json["survey"]  =  survey;
-
-        var jsonString = JSON.stringify(json);
-        //console.log(template);
-        console.log(jsonString);
-        //console.log(name);
-
+        }
     });
 
 
 
 
-    $("#content").delegate("div[type]", "mouseover", function(){   
+    $("#content").delegate("div[type]", "mouseover", function(){
 
         var offset = $(this).offset();
         var top = offset.top +10 ;
         var left = offset.left + 810 - 40;
         $(this).find(".close").css("top",top);
-        $(this).find(".close").css("left",left);   
+        $(this).find(".close").css("left",left);
         //when mouseover on Multiple choice question, show buttons.
         if ($(this).attr("type") == "radio") {
             $(this).find(".add").css("top",top+30);
-            $(this).find(".add").css("left",left); 
-            $(this).find(".add").css("display","block");   
+            $(this).find(".add").css("left",left);
+            $(this).find(".add").css("display","block");
             $(this).find(".delete").css("top",top+60);
-            $(this).find(".delete").css("left",left);  
+            $(this).find(".delete").css("left",left);
             $(this).find(".delete").css("display","block");
 
         }
         else if ($(this).attr("type") == "checkbox"){
-            
+
             $(this).find(".addMulti").css("top",top+30);
-            $(this).find(".addMulti").css("left",left); 
+            $(this).find(".addMulti").css("left",left);
             $(this).find(".addMulti").css("display","block");
             $(this).find(".deleteMulti").css("top",top+60);
-            $(this).find(".deleteMulti").css("left",left);  
+            $(this).find(".deleteMulti").css("left",left);
             $(this).find(".deleteMulti").css("display","block");
 
-        }   
-        $(this).find(".close").css("display","block");         
+        }
+        $(this).find(".close").css("display","block");
     });
 
 
-    $("#content").delegate("div[type]", "mouseout", function(){            
+    $("#content").delegate("div[type]", "mouseout", function(){
         $(this).find(".close").css("display","none");
         //when mouseout on Multiple choice question, hide buttons.
         if ($(this).attr("type") == "radio") {
             $(this).find(".add").css("display","none");
             $(this).find(".delete").css("display","none");
 
-           
-        }   
+
+        }
         else if($(this).attr("type") == "checkbox"){
             $(this).find(".addMulti").css("display","none");
             $(this).find(".deleteMulti").css("display","none");
-        }            
+        }
     });
 
 
     $(".main").delegate(".close", "click", function(){
         //delete question
-        var currentObj  =   $(this).closest("div[type]");      
+        var currentObj  =   $(this).closest("div[type]");
         var type    =   currentObj.attr("type");
         if (type == "label") {
             currentObj.remove();
@@ -238,9 +304,9 @@
             currentObj.remove();
             $("#content div[type!=label]").each(function(){
                 var number = $(this).attr("number");
-                if (number > cur_number) {                  
+                if (number > cur_number) {
                     $(this).attr("number", number-1);
-                    var qn = "Q" + --number;    
+                    var qn = "Q" + --number;
                     $(this).attr("id", qn);
                     $(this).attr("name", qn);
                     $(this).find("label").html(qn);
@@ -253,12 +319,12 @@
     //edit Multiple choice options
     $(".main").delegate(".add", "click", function(){
         var length = $(this).closest("div[type]").find("ul li").length;
-        var content = "<li><input type='radio'><input type='text' value='Option"+ (length+1) +"'></li>";        
+        var content = "<li><input type='radio'><input type='text' value='Option"+ (length+1) +"'></li>";
         $(this).closest("div[type]").find("ul").append(content);
     });
     $(".main").delegate(".addMulti", "click", function(){
         var length = $(this).closest("div[type]").find("ul li").length;
-        var content = "<li><input type='checkbox'><input type='text' value='Option"+ (length+1) +"'></li>";        
+        var content = "<li><input type='checkbox'><input type='text' value='Option"+ (length+1) +"'></li>";
         $(this).closest("div[type]").find("ul").append(content);
     });
 
@@ -266,12 +332,12 @@
 
         var length = $(this).closest("div[type]").find("ul li").length;
         $(this).closest("div[type]").find("ul li:last").remove();
-    }); 
+    });
     $(".main").delegate(".deleteMulti", "click", function(){
 
         var length = $(this).closest("div[type]").find("ul li").length;
         $(this).closest("div[type]").find("ul li:last").remove();
-    }); 
+    });
 
 
 </script>
