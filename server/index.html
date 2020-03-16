@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
 <!--    <script type="text/javascript" src="//static.runoob.com/assets/qrcode/qrcode.min.js"></script>-->
-    <script type="text/javascript" src="jquery.qrcode.min.js"></script>
+    <script type="text/javascript" src="css/jquery.qrcode.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <!--
     <script type="text/javascript" src="js/main.js"></script>
@@ -114,6 +114,7 @@
         var counter=0
         var content = [];
         var count = 0;
+<<<<<<< HEAD
         $("#content").find("div[type]").each(function(){
             var type = $(this).attr("type");
             //collcet quesion options
@@ -208,7 +209,134 @@
                 });
             }
         }
+=======
+        $("#qrcode").empty();
+        if( $("#questionnaireName").val()==""){
+            alert("请先输入问卷的标题!");
+            return;
+        }else{
+            if(confirm("您确定要保存当前问卷吗？")==true){
+                $("#content").find("div[type]").each(function(){
+                    var type = $(this).attr("type");
+                    //collcet quesion options
+                    if (type == "label") {
+                        var tempdata = {};
+                        tempdata['type']    =   type;
+                        tempdata['question']   =   $(this).find("textarea").val();
+                        content[count++]    =   tempdata;
+                        counter++;
+                    } else if (type == "radio") {
+                        var tempdata = {};
+                        tempdata['type']    =   "single";
+                        tempdata['question']   =   $(this).find("input.title").val();
+                        var tempCount   =   1;
+                        var tempRadio   =   {};
+                        $(this).find(".answer input[type=text]").each(function(){
+                            tempRadio[tempCount++]  =   $(this).val();
+                        });
+                        tempdata['options']  =   tempRadio;
 
+                        content[count++]    =   tempdata;
+                        counter++;
+
+                    } else if (type == "text") {
+                        var tempdata = {};
+                        tempdata['type']    =   type;
+                        tempdata['question']   =   $(this).find("input.title").val();
+                        content[count++]    =   tempdata;
+                        counter++;
+                    } else if (type == "checkbox"){
+                        var tempdata = {};
+                        tempdata['type']    =   "multi";
+                        tempdata['question']   =   $(this).find("input.title").val();
+                        var tempCount   =   1;
+                        var tempRadio   =   {};
+                        $(this).find(".answer input[type=text]").each(function(){
+                            tempRadio[tempCount++]  =   $(this).val();
+                        });
+                        tempdata['options']  =   tempRadio;
+                        content[count++]    =   tempdata;
+                        counter++;
+                    }
+
+                });
+                //package json
+                function GetXmlHttpObject() {
+                    var xmlHttp=null;
+                    try
+                    {
+                        // Firefox, Opera 8.0+, Safari
+                        xmlHttp=new XMLHttpRequest();
+                    }
+                    catch (e)
+                    {
+                        // Internet Explorer
+                        try
+                        {
+                            xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+                        }
+                        catch (e)
+                        {
+                            xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+                        }
+                    }
+                    return xmlHttp;
+                }
+>>>>>>> b6ecae098a7f1c2c348909e052de9472b3f91b95
+
+                var survey = {};
+                var timestamp=Number(new Date());
+                var name    =   $("#questionnaireName").val();
+                survey["len"]  =  counter;
+                survey["id"]   =  timestamp;
+                survey["name"] = name;
+                survey["questions"] = content;
+                var json = {};
+                json["survey"]  =  survey;
+
+                var jsonString = JSON.stringify(json);
+                //console.log(template);
+                console.log(timestamp);
+                console.log(jsonString);
+                //console.log(name);
+                //
+                //     $("#qrcode").html("正在提交数据，请勿关闭当前窗口...");
+                //     $.ajax({
+                //         type: "POST",
+                //         url: "../qrcode.php",
+                //         contentType: "application/json; charset=utf-8",
+                //         data: jsonString,
+                //     dataType: "json",
+                //         success: function (message) {
+                //             alert("请求已提交！我们会尽快与您取得联系");
+                //     },
+                //     error: function (message) {
+                //         $("#qrcode").html("提交数据失败！");
+                //     }
+                // });
+
+
+                var xhr=GetXmlHttpObject();
+                xhr.open("POST","./qrcode.php");
+                xhr.setRequestHeader('Content-Type',' application/x-www-form-urlencoded');
+                // 设置数据
+                xhr.send("data="+jsonString);
+
+                // 监听服务器响应
+                xhr.onreadystatechange = function(){
+                    if (xhr.readyState==4 && xhr.status==200){
+                        $("#qrcode").qrcode({
+                            width:100,
+                            render:"canvas",
+                            height:100,
+                            text:"https://xiaonan.ngrok2.xiaomiqiu.cn/server/jsondata/"+ timestamp+".json"
+                        });
+                    }
+                }
+            }else{
+                return;
+            }
+        }
     });
 
 
