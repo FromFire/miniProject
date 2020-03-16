@@ -16,13 +16,21 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
     }
 
     public void goToSurvey(android.view.View V) {
         CheckBox cb_accept = findViewById(R.id.accept);
         if(!cb_accept.isChecked())
             return;
-        Intent intent = new Intent(this, question_page.class);
+        //Intent intent = new Intent(this, question_page.class);
+
+//For dev only, start Camera activity.
+        Intent intent = new Intent(this, CameraActivity.class);
         startActivity(intent);
     }
+
+
 }
