@@ -21,3 +21,18 @@ Part bd:
 - FromFire(Jing-Wen Cheng)
 
 - Moshu(Shu Mo)
+
+## Status
+
+a.Web Server: done.(front end by Riino; back end and POST/GET procedure by PXN)
+
+b.Main menu: TODO
+
+
+c.QR Scanner: 70%
+
+  Internect Request: TODO
+
+d.TODO
+
+e.TODO
