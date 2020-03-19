@@ -49,7 +49,6 @@ public class LockActivity extends AppCompatActivity {
                     return;
                 }
                 if(code.equals(result)){
-                    Toast.makeText(LockActivity.this,"unlock successfully",Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(LockActivity.this, QuestionnaireActivity.class);
                     startActivity(intent);
                 }

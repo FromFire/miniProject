@@ -30,6 +30,7 @@
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_gravity="center"
+        android:background="@drawable/bg"
         app:normal_color="@color/point_color"
         app:press_color="@color/circle_color"
         app:error_color="@color/error_point_select_color"
