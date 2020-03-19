@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.location.LocationManager;
@@ -34,6 +35,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.RandomAccessFile;
 import java.util.List;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class report extends AppCompatActivity {
 
@@ -259,6 +264,7 @@ public class report extends AppCompatActivity {
         cv.put("answer", answer);
         cv.put("latitude", latitude);
         cv.put("longitude", longitude);
+        cv.put("sync",0);
         return cv;
     }
 
@@ -326,5 +332,58 @@ public class report extends AppCompatActivity {
         loc = locationManager.getLastKnownLocation(locationProvider);
 //        if(loc == null)
 //            locationManager.requestLocationUpdates(locationProvider, 0, 0,locationListener);
+    }
+    void sync() {
+
+        DBHelper myHelper = new DBHelper(this,"Survey.db",null,1);
+
+        SQLiteDatabase db = myHelper.getReadableDatabase();
+        SQLiteDatabase dbWrite = myHelper.getWritableDatabase();
+        String sql="SELECT* FROM answer WHERE sync = 0";
+        Cursor cursor=db.rawQuery(sql,new String[]{});
+
+        JSONObject syncAnswerArray = new JSONObject();
+        while(cursor.moveToNext()){
+            JSONObject syncAnswer = new JSONObject();
+            String latitude=cursor.getString(cursor.getColumnIndex("latitude"));
+            String  longitude=cursor.getString(cursor.getColumnIndex(" longitude"));
+            String timestamp=cursor.getString(cursor.getColumnIndex("timestamp"));
+            String IMEI=cursor.getString(cursor.getColumnIndex("IMEI"));
+            String answer=cursor.getString(cursor.getColumnIndex("answer"));
+            try {
+                syncAnswer.put("latitude",latitude);
+                syncAnswer.put("longitude",longitude);
+                syncAnswer.put("timestamp",timestamp);
+                syncAnswer.put("IMEI",IMEI);
+                syncAnswer.put("answer",answer);
+                syncAnswerArray.put("array",syncAnswer);
+            }
+            catch (JSONException e){
+                Log.e("JSON",e.toString());
+            }
+
+
+        }
+
+        try {
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(syncAnswerArray.toString()).build();
+            Response response = client.newCall(request).execute();
+            String responseData = response.body().string();
+
+            /*
+            if(isOK(responseData){
+                dbWrite.update(//TODO)
+            }
+
+             */
+
+
+        } catch (Exception e) {
+            Log.e("HTTP", e.toString());
+            //e.printStackTrace();
+        }
+        cursor.close();
     }
 }

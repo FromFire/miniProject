@@ -41,15 +41,15 @@ e.Lock and save answers : 90% DONE (By Moshu )
 
 ### TABLE Survey
 
-| col integer INT (increasing) | col surveyID TEXT | col surveyJsonString TEXT |
-| ---------------------------- | ----------------- | ------------------------- |
-|                              |                   |                           |
+| col integer INT | col surveyID TEXT | col surveyJsonString TEXT |
+| --------------- | ----------------- | ------------------------- |
+| (increasing)    |                   |                           |
 
 ### TABLE answer
 
-| col id INT | col latitude DOUBLE | col timestamp DOUBLE | col IMEI char(20) | col answer TEXT |
-| ---------- | ------------------- | -------------------- | ----------------- | --------------- |
-|            |                     |                      |                   |                 |
+| col id INT | col latitude DOUBLE | col timestamp DOUBLE | col sync INT | col IMEI char(20) | col answer TEXT |
+| ---------- | ------------------- | -------------------- | ------------ | ----------------- | --------------- |
+|            |                     |                      | 0            |                   |                 |
 
 ### Answer json format
 

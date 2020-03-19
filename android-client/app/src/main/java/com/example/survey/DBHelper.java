@@ -18,6 +18,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "latitude double not null, " +
                 "longitude double not null," +
                 "timestamp long not null," +
+                "sync integer not null,"+
                 "IMEI char(20)," + //15-17 number sequence
                 "answer text)");
     }
