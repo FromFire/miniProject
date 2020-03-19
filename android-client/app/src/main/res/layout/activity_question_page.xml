@@ -4,10 +4,6 @@
     android:layout_height="match_parent"
     android:gravity="center">
 
-    <!--  Start : Your code should be within this block -->
-
-
-    <!-- END    : Your code should be within this block -->
 
     <LinearLayout
         android:id="@+id/ly"

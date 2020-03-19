@@ -60,15 +60,13 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="320dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/linearlayout"
         android:background="#99008577"
         android:onClick="goToSurvey"
-
         android:text="LET'S START!"
         android:textSize="16sp" />
-
 
     <!-- END    : Your code should be within this block -->
 

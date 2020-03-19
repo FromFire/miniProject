@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
@@ -12,8 +13,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
+import android.database.sqlite.SQLiteDatabase;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.LinearLayout;
@@ -27,8 +33,13 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.RandomAccessFile;
+import java.util.List;
 
 public class report extends AppCompatActivity {
+
+    private final static int REQUEST_ACCESS_COARSE_LOCATION = 1;
+    private final static int REQUEST_ACCESS_FINE_LOCATION = 1;
+    private final static int REQUEST_READ_PHONE_STATE = 1;
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
@@ -36,12 +47,19 @@ public class report extends AppCompatActivity {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
     Question[] questions;
+    Location loc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
+        FinishAll.activityList.add(report.this);
         showReport();
+
+        //about saving in database
+        initLocManager();
+        //getValues();
+        saveToDB();
     }
 
     protected void showReport() {
@@ -100,7 +118,8 @@ public class report extends AppCompatActivity {
 
 
     public void exit(android.view.View V) {
-        System.exit(0);
+        Intent intent = new Intent(this, LockActivity.class);
+        startActivity(intent);
     }
 
     public void storeInApp(android.view.View V) {
@@ -187,5 +206,125 @@ public class report extends AppCompatActivity {
         }
     }
 
+    //save location, time, IMEI, answer(in JSON) to database
+    public void saveToDB() {
+        DBHelper myHelper = new DBHelper(this,"Survey.db",null,1);
+        ContentValues values = getValues();
 
+        if (values == null) {
+            Toast.makeText(report.this, "Store failed, please retry!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        SQLiteDatabase db = myHelper.getWritableDatabase();
+        long id = db.insert("answer", null, values);
+        if (id == -1)
+            Log.i("SQL", "failed");
+        else
+            Log.i("SQL", "success");
+            Log.i("SQL","answer saved:"+values);
+        db.close();
+    }
+
+    public ContentValues getValues() {
+        String answer = getResultFileContent();
+        long timeStamp = getTimeStamp();
+        String IMEI = getIMEI();
+        getLocation();
+
+        //validation check
+        if (answer == null)
+            return null;
+        if (IMEI == null)
+            Log.i("getValues", "IMEI null");
+        else
+            Log.i("IMEI", IMEI);
+        double latitude = 0;
+        double longitude = 0;
+        if (loc == null)
+            Log.i("getValues", "location null");
+        else {
+            latitude = loc.getLatitude();
+            longitude = loc.getLongitude();
+            Log.i("latitude", Double.toString(latitude));
+            Log.i("longitude", Double.toString(longitude));
+        }
+        Log.i("timestamp", "" + timeStamp);
+        Log.i("answer", answer);
+
+        //put all parameters into @param values
+        ContentValues cv = new ContentValues();
+        cv.put("IMEI", IMEI);
+        cv.put("timestamp", timeStamp);
+        cv.put("answer", answer);
+        cv.put("latitude", latitude);
+        cv.put("longitude", longitude);
+        return cv;
+    }
+
+    public String getIMEI() {
+        if (Build.VERSION.SDK_INT >= 29)
+            return null;
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            Log.i("IMEI", "no permission");
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_READ_PHONE_STATE);
+            return null;
+        }
+
+        TelephonyManager tm = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+        try {
+            if(Build.VERSION.SDK_INT >= 26) {
+                String k = tm.getImei();
+                return tm.getImei();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public long getTimeStamp() {
+        return System.currentTimeMillis();
+    }
+
+    private LocationManager locationManager;
+    private String locationProvider;
+
+    private void initLocManager() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_ACCESS_FINE_LOCATION);
+        }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_ACCESS_COARSE_LOCATION);
+        }
+
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        List<String> providers = locationManager.getProviders(true);
+        if (providers.contains(LocationManager.GPS_PROVIDER)) {
+            Log.i("provider", "gps provider");
+            locationProvider = LocationManager.GPS_PROVIDER;
+        } else
+        if (providers.contains(LocationManager.NETWORK_PROVIDER)) {
+            Log.i("provider", "network provider");
+            locationProvider = LocationManager.NETWORK_PROVIDER;
+        } else {
+            Log.i("provider", "no provider");
+            return;
+        }
+    }
+
+    // set @param loc
+    public void getLocation() {
+        //ask for permission
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        Log.i("WHY","!!!");
+        loc = locationManager.getLastKnownLocation(locationProvider);
+//        if(loc == null)
+//            locationManager.requestLocationUpdates(locationProvider, 0, 0,locationListener);
+    }
 }

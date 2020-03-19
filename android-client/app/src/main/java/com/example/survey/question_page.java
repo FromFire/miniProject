@@ -3,6 +3,8 @@ package com.example.survey;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,36 +27,56 @@ import java.util.ArrayList;
 
 import static android.view.View.GONE;
 
-public class question_page extends AppCompatActivity {
+public class
+question_page extends AppCompatActivity {
     private Question[] questions;
     String id;
     int nowQuestion;
+    private Bundle ID;
+    private DBHelper dbHelper;
+    private SQLiteDatabase db;
+    private Cursor cursor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_page);
+        FinishAll.activityList.add(question_page.this);
+        init();
+        String questionJson=null;//DANGER
+        cursor.moveToFirst();
+        questionJson=cursor.getString(cursor.getColumnIndex("surveyJsonString"));
+        Log.i("SQL","try get questions:"+cursor.getString(cursor.getColumnIndex("surveyJsonString")));
+        while(cursor.moveToNext()){
+            questionJson=cursor.getString(cursor.getColumnIndex("surveyJsonString"));
+            Log.i("SQL","get data from DB:"+ questionJson);
+        }
+        loadQuestion(questionJson);
         nowQuestion = 0;
-        loadQuestion();
         showQuestion(nowQuestion);
     }
 
-    private void loadQuestion() {
-        try {
-            //open file "question.JSON"
-            InputStreamReader inputStreamReader =
-                    new InputStreamReader(getAssets().open("question.json"), "UTF-8");
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            String line;
-            StringBuilder stringBuilder = new StringBuilder();
-            while((line = bufferedReader.readLine()) != null) {
-                stringBuilder.append(line);
-            }
-            bufferedReader.close();
-            inputStreamReader.close();
+    public void init(){
+        Intent i=getIntent();
+        ID =i.getExtras();
 
+        dbHelper=new DBHelper(this,"Survey.db",null,1);
+        db=dbHelper.getReadableDatabase();
+        String surveyID=ID.getString("id");
+
+
+        String sql="SELECT* FROM survey WHERE surveyID="+"'"+surveyID+"'";
+
+        cursor=db.rawQuery(sql,new String[]{});
+        Log.i("SQL","Questionire recodes number:"+ cursor.getCount());
+        Log.i("SQL","target id: "+String.valueOf(surveyID));
+    }
+
+    private void loadQuestion(String json) {
+        try {
+            Log.i("JSON",json);
             //read from "question.JSON"
-            JSONObject jsonObject = new JSONObject(stringBuilder.toString());
+            JSONObject jsonObject = new JSONObject(json);
             jsonObject = jsonObject.getJSONObject("survey");
 
             id = jsonObject.getString("id");
@@ -64,7 +86,7 @@ public class question_page extends AppCompatActivity {
             for(int i=0; i<size; i++)
                 questions[i] = new Question(questionArray.getJSONObject(i), true);
 
-        } catch(IOException | JSONException e) {
+        } catch(JSONException e) {
             e.printStackTrace();
         }
     }
