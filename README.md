@@ -26,7 +26,7 @@ Part bd:
 
 a.Web Server: done.(front end by Riino; back end and POST/GET procedure by PXN)
 
-b.Main menu: 90% DONE (By PXN)
+b.Main menu: 90% DONE (By PXN and Moshu)
 
  - Dynamic listview: TODO
 
