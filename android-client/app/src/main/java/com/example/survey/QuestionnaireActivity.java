@@ -120,6 +120,7 @@ public class QuestionnaireActivity extends AppCompatActivity {
                                 db.execSQL("INSERT INTO survey VALUES(NULL,?,?)",new Object[]{
                                         id,responseData});
                                 Log.i("SQL","EXEC"+id+responseData);
+                                flush();
                             }else{
                                 //System.out.println("问卷已存在");
                                 Log.i("SQL","insert new questionire fail.");
@@ -220,6 +221,10 @@ public class QuestionnaireActivity extends AppCompatActivity {
                 getResources().getDisplayMetrics());
     }
 
-
+    public void flush() {
+        finish();
+        Intent intent = new Intent(this, QuestionnaireActivity.class);
+        startActivity(intent);
+    }
 }
 
