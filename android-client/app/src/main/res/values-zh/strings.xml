@@ -1,0 +1,78 @@
+<resources xmlns:tools="http://schemas.android.com/tools"
+    encoding = "utf-8">
+    <string name="app_name">调查问卷</string>
+
+    <!-- layout -->
+
+    <!-- 用于create_questionnaire中 -->
+    <string name="delete_question"> 删除问题 </string>
+    <string name="new_question"> 新增问题 </string>
+    <string name="commit_question"> 完成问卷 </string>
+
+    <!-- 用于lock中 -->
+    <string name="lock_intro"> 请在下方绘制退出手势锁 </string>
+
+    <!-- 用于main中 -->
+    <string name="welcome_to"> 欢迎 </string>
+    <string name="take_part"> 使用我们的调查问卷程序！ </string>
+    <string name="should_know_intro"> 在开始之前，请先阅读下面的注意事项： </string>
+    <string name="should_know_list" tools:ignore="StringEscaping">
+        - 请诚实做出选择。 \n\n
+        - 此问卷仅用于进行研究，您无须担心真实回答会对您的生活造成任何影响。\n\n
+        - 请按我们设计的步骤进行答题，不要跳过问题。
+    </string>
+    <string name="accept_intro"> 我同意。 </string>
+    <string name="lets_start"> 现在开始！ </string>
+
+    <!-- 用于question_page中，不显示在app中，仅用于预览效果 -->
+    <string name="question1_title"> Question 1 </string>
+    <string name="question1">
+        Which brand of phone will you choose if you are going to buy a new one?
+    </string>
+    <string name="option1"> IPhone </string>
+    <!-- 用于question_page中，显示在app中 -->
+    <string name="next_question"> 下一题 </string>
+
+    <!-- 用于questionnaire中 -->
+    <string name="add_new_questionnaire"> 新增问卷 </string>
+    <string name="create_questionnaire"> 创建问卷 </string>
+    <string name="exit"> 退出 </string>
+
+    <!-- 用于report中 -->
+    <string name="report_title"> 您的回答 </string>
+    <string name="store_in_app"> 在应用内部储存回答 </string>
+    <string name="store_in_SDCard"> 在SD卡中储存回答 </string>
+    <string name="finish_answer"> 完成 </string>
+
+    <!-- 用于item中，不显示在app中，仅用于预览效果 -->
+    <string name="item_sample"> ITEM </string>
+
+    <!-- 用于question_card中 -->
+    <string name="question_type_intro"> 问题类型 </string>
+    <string name="question_intro"> 问题 </string>
+    <string name="option_intro"> 选项 </string>
+    <string name="new_option"> 新增选项 </string>
+    <string name="delete_option"> 删除选项 </string>
+    <string-array name="question_types">
+        <item name="multi"> 多选题 </item>
+        <item name="single"> 单选题 </item>
+        <item name="fill"> 填空题 </item>
+    </string-array>
+
+
+
+    <!-- activity -->
+
+    <!-- 用于CreateQuestionnaire -->
+    <string name="questionnaire_invalid_warning"> 问题和选项不能为空！ </string>
+
+    <!-- 用于LockActivity -->
+    <string name="unlock_failed"> 解锁失败 </string>
+
+    <!-- 用于question_page -->
+    <string name="question_name"> 问题 </string>
+    <string name="finish_survey"> 完成 </string>
+    <string name="answer_empty_warning"> 答案不能为空！ </string>
+
+
+</resources>

@@ -33,12 +33,14 @@ import com.yanzhenjie.permission.Permission;
 import com.yzq.zxinglibrary.android.CaptureActivity;
 import com.yzq.zxinglibrary.common.Constant;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 import okhttp3.OkHttpClient;
@@ -47,6 +49,7 @@ import okhttp3.Response;
 
 public class QuestionnaireActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_SCAN = 111;
+    private static final int REQUEST_CREATE = 222;
     private SwipeMenuListView listView;
     private DBHelper dbHelper;
     private SQLiteDatabase db;
@@ -57,10 +60,10 @@ public class QuestionnaireActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questionnaire);
         FinishAll.activityList.add(QuestionnaireActivity.this);
-        dbHelper = new DBHelper(this, "Survey.db", null, 1);
-        listView = findViewById(R.id.lv_questionnaire);
-        initListView();
-    }
+    dbHelper = new DBHelper(this, "Survey.db", null, 1);
+    listView = findViewById(R.id.lv_questionnaire);
+    initListView();
+}
 
     public void exit(View view) {
         FinishAll.exit();
@@ -109,6 +112,7 @@ public class QuestionnaireActivity extends AppCompatActivity {
                             Response response=client.newCall(request).execute();
                             String responseData=response.body().string();
                             Log.i("Capture",responseData);
+
                             db=dbHelper.getWritableDatabase();
                             JSONObject jsonObject = new JSONObject(responseData);
                             jsonObject = jsonObject.getJSONObject("survey");//DANGER
@@ -131,13 +135,53 @@ public class QuestionnaireActivity extends AppCompatActivity {
                         }
                     }
                 }).start();
-
-
             }
         }
         //this.onCreate(null);
-    }
 
+        if(requestCode == REQUEST_CREATE && resultCode == RESULT_OK) {
+            try {
+                int count = data.getIntExtra("count", 0);
+                Question[] questions = new Question[count];
+                for(int i=0; i<count; i++) {
+                    Question ques = (Question) data.getSerializableExtra("question"+i);
+                    questions[i] = ques;
+                }
+
+                JSONObject survey = new JSONObject();
+                survey.put("id", new Random().nextInt(1000000));
+                survey.put("len", count);
+                JSONArray jsonArray = new JSONArray();
+                for(int i=0; i<count; i++){
+                    jsonArray.put(questions[i].toJSONObQuestion());
+                }
+                survey.put("questions", jsonArray);
+
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("survey", survey);
+                String responseData = jsonObject.toString();
+                jsonObject = jsonObject.getJSONObject("survey");
+
+                db=dbHelper.getWritableDatabase();
+                String id=jsonObject.getString("id");
+                String sql="SELECT* FROM survey WHERE surveyID="+id;
+                cursor=db.rawQuery(sql,new String[]{});
+                System.out.println(responseData);
+                if(cursor.getCount()==0){
+                    db.execSQL("INSERT INTO survey VALUES(NULL,?,?)",new Object[]{
+                            id,responseData});
+                    Log.i("SQL","EXEC"+id+responseData);
+                    flush();
+                }else{
+                    //System.out.println("问卷已存在");
+                    Log.i("SQL","insert new questionire fail.");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
 
     public void initListView() {
         SwipeMenuCreator creator = new SwipeMenuCreator() {
@@ -190,6 +234,7 @@ public class QuestionnaireActivity extends AppCompatActivity {
         listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                //Toast.makeText(getApplicationContext(), ""+index, Toast.LENGTH_SHORT).show();
                 String str = listView.getAdapter().getItem(position).toString();
                 String id = str.split(" ")[1];
                 id = id.substring(0, id.length() - 1);
@@ -227,6 +272,10 @@ public class QuestionnaireActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void createQuestionnaire(View V) {
+        Intent intent = new Intent(this, CreateQuestionnaire.class);
+        startActivityForResult(intent, REQUEST_CREATE);
+    }
 
 }
 

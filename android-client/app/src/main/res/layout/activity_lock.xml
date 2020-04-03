@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,31 +8,37 @@
     tools:context=".LockActivity" android:orientation="vertical">
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
         android:gravity="center"
+        android:text="@string/lock_intro"
         android:textSize="24sp"
-        android:text="Please draw the exit code below."
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/tv_code"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_code"
-        android:layout_marginTop="30dp"
         android:gravity="center"
+        android:text=""
         android:textSize="24sp"
-        android:text="" />
+        app:layout_constraintEnd_toEndOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.wangnan.library.GestureLockView
         android:id="@+id/glv"
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_gravity="center"
-        android:background="@drawable/bg"
-        app:normal_color="@color/point_color"
-        app:press_color="@color/circle_color"
         app:error_color="@color/error_point_select_color"
-        app:line_thickness="6dp" />
-</LinearLayout>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:line_thickness="6dp"
+        app:normal_color="@color/point_color"
+        app:press_color="@color/circle_color" />
+</androidx.constraintlayout.widget.ConstraintLayout>

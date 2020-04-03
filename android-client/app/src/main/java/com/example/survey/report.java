@@ -23,6 +23,7 @@ import android.os.Environment;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -109,7 +110,7 @@ public class report extends AppCompatActivity {
 
         TextView a = new TextView(this);
         LinearLayout.LayoutParams param2 =
-                new LinearLayout.LayoutParams(650,
+                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT);
         param2.gravity = Gravity.CENTER_HORIZONTAL;
         param2.bottomMargin = 60;

@@ -9,8 +9,8 @@
     <!--  Start : Your code should be within this block -->
 
     <ScrollView
-        android:layout_width="317dp"
-        android:layout_height="564dp">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,8 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20sp"
-                android:autoText="false"
-                android:text="REPORT"
+                android:text="@string/report_title"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="36sp" />
 
@@ -43,7 +42,7 @@
                 android:background="#99008577"
 
                 android:onClick="storeInApp"
-                android:text="STORE DATA INSIDE APP"
+                android:text="@string/store_in_app"
                 android:textSize="16sp" />
 
             <Button
@@ -54,7 +53,7 @@
                 android:background="#99008577"
 
                 android:onClick="storeInSDCard"
-                android:text="STORE DATA IN SD CARD"
+                android:text="@string/store_in_SDCard"
                 android:textSize="16sp" />
 
             <Button
@@ -63,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:background="#99008577"
                 android:onClick="exit"
-                android:text="FINISH"
+                android:text="@string/finish_answer"
                 android:textSize="16sp" />
         </LinearLayout>
     </ScrollView>

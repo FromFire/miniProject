@@ -6,7 +6,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Question {
+import java.io.Serializable;
+import java.util.List;
+
+public class Question implements Serializable {
     private String type;
     private String question;
     private String[] options;
@@ -34,6 +37,28 @@ public class Question {
             for(int i=0; i<size; i++)
                 answers[i] = array.getString(i);
         }
+    }
+
+    Question(String _type, String _question, String[] _options) {
+        type = _type;
+        question = _question;
+        options = _options;
+    }
+
+    JSONObject toJSONObQuestion() throws JSONException {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("type", type);
+        jsonObject.put("question", question);
+        if(type != "fill-in") {
+            JSONArray jsonArray = new JSONArray();
+            for(int i=0; i<options.length; i++) {
+                JSONObject op = new JSONObject();
+                op.put(""+(i+1), options[i]);
+                jsonArray.put(op);
+            }
+            jsonObject.put("options", jsonArray);
+        }
+        return jsonObject;
     }
 
     public JSONObject getResult() throws JSONException {

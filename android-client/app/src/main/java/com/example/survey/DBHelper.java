@@ -21,6 +21,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "sync integer not null,"+
                 "IMEI char(20)," + //15-17 number sequence
                 "answer text)");
+        //db.execSQL("delete from survey");
     }
     public void onUpgrade(SQLiteDatabase db,int oldVersion,int newVersion){
 

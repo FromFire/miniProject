@@ -53,7 +53,7 @@ public class LockActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 else{
-                    Toast.makeText(LockActivity.this,"unlock failed",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LockActivity.this,getResources().getString(R.string.unlock_failed),Toast.LENGTH_SHORT).show();
                     gestureLockView.showErrorStatus(600);
                     String code1=listToString(exitCode());
                     tv_code.setText(code1);

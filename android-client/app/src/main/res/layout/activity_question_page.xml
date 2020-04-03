@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center">
@@ -9,14 +11,18 @@
         android:id="@+id/ly"
         android:layout_width="320dp"
         android:layout_height="500dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/next"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/question_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="40sp"
-            android:text="Question 1"
+            android:text="@string/question1_title"
             android:textSize="24sp" />
 
         <TextView
@@ -47,7 +53,7 @@
                 android:id="@+id/radioButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Iphone"
+                android:text="@string/option1"
                 android:textSize="18sp" />
 
         </RadioGroup>
@@ -58,8 +64,11 @@
         android:id="@+id/next"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:background="#99008577"
         android:layout_below="@id/ly"
+        android:background="#99008577"
         android:onClick="next"
-        android:text="NEXT" />
-</RelativeLayout>
+        android:text="@string/next_question"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

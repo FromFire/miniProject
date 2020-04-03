@@ -94,10 +94,10 @@ question_page extends AppCompatActivity {
     private void showQuestion(int i) {
         Question now = questions[i];
         //if(true) return;
-        ((TextView)findViewById(R.id.question_number)).setText("Question "+ (i+1));
+        ((TextView)findViewById(R.id.question_number)).setText(getResources().getString(R.string.question_name) + "" + (i+1));
         ((TextView)findViewById(R.id.question)).setText(now.getQuestion());
         if(i == questions.length-1)
-            ((Button)findViewById(R.id.next)).setText("FINISH");
+            ((Button)findViewById(R.id.next)).setText(getResources().getString(R.string.finish_survey));
 
         EditText editText = findViewById(R.id.editText);
         RadioGroup radioGroup = findViewById(R.id.rd);
@@ -144,7 +144,7 @@ question_page extends AppCompatActivity {
         if(now.getType().equals("fill-in")) {
             String ans = editText.getText().toString();
             if(ans.length() == 0) {
-                Toast.makeText(this,"Answer should not be empty!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,getResources().getString(R.string.answer_empty_warning), Toast.LENGTH_SHORT).show();
                 return;
             }
             now.setAnswer(new String[] {ans});
@@ -152,7 +152,7 @@ question_page extends AppCompatActivity {
         else if(now.getType().equals("single")) {
             int id = radioGroup.getCheckedRadioButtonId();
             if(id == -1) {
-                Toast.makeText(this,"Answer should not be empty!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,getResources().getString(R.string.answer_empty_warning), Toast.LENGTH_SHORT).show();
                 return;
             }
             now.setAnswer(new String[] { ((RadioButton)findViewById(id)).getText().toString()});
@@ -166,7 +166,7 @@ question_page extends AppCompatActivity {
                     ans.add(cb.getText().toString());
             }
             if(ans.size() == 0) {
-                Toast.makeText(this,"Answer should not be empty!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,getResources().getString(R.string.answer_empty_warning), Toast.LENGTH_SHORT).show();
                 return;
             }
             String[] ans_str = new String[ans.size()];

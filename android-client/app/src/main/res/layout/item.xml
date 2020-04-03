@@ -10,7 +10,7 @@
         android:id="@+id/tv_item"
         android:gravity="center"
         android:textSize="24sp"
-        android:text="item" />
+        android:text="@string/item_sample" />
 
 
 </LinearLayout>
